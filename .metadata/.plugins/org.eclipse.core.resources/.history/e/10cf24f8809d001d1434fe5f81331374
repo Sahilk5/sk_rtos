@@ -1,0 +1,6 @@
+#include "timebase.h"
+#include "stm32f4xx.h"
+
+void timebase_init(void) {
+
+}

@@ -1,0 +1,15 @@
+19:38:13 **** Incremental Build of configuration Debug for project 2_timebase ****
+make -j20 all 
+arm-none-eabi-gcc "../Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DSTM32F411xE -c -I../Inc -I"C:/Users/sahil/Downloads/rtos/stm32cubeIDE/2_timebase/chip_headers/CMSIS/Include" -I"C:/Users/sahil/Downloads/rtos/stm32cubeIDE/0_led_driver/chip_headers/CMSIS/Device/ST/STM32F4xx/Include" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Src/main.d" -MT"Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Src/main.o"
+arm-none-eabi-gcc "../Src/uart.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DSTM32F411xE -c -I../Inc -I"C:/Users/sahil/Downloads/rtos/stm32cubeIDE/2_timebase/chip_headers/CMSIS/Include" -I"C:/Users/sahil/Downloads/rtos/stm32cubeIDE/0_led_driver/chip_headers/CMSIS/Device/ST/STM32F4xx/Include" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Src/uart.d" -MT"Src/uart.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Src/uart.o"
+arm-none-eabi-gcc -o "2_timebase.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\sahil\Downloads\rtos\stm32cubeIDE\2_timebase\STM32F411RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="2_timebase.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: 2_timebase.elf
+ 
+arm-none-eabi-size   2_timebase.elf 
+arm-none-eabi-objdump -h -S  2_timebase.elf  > "2_timebase.list"
+   text	   data	    bss	    dec	    hex	filename
+   4388	    112	   1592	   6092	   17cc	2_timebase.elf
+Finished building: default.size.stdout
+ 
+Finished building: 2_timebase.list
+ 

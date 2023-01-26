@@ -1,0 +1,17 @@
+14:41:41 **** Incremental Build of configuration Debug for project 1_uart_driver ****
+make -j20 all 
+arm-none-eabi-gcc "../Src/uart.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DSTM32F411xE -c -I../Inc -I"C:/Users/sahil/Downloads/rtos/stm32cubeIDE/1_uart_driver/chip_headers/CMSIS/Include" -I"C:/Users/sahil/Downloads/rtos/stm32cubeIDE/0_led_driver/chip_headers/CMSIS/Device/ST/STM32F4xx/Include" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Src/uart.d" -MT"Src/uart.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Src/uart.o"
+arm-none-eabi-gcc -o "1_uart_driver.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\sahil\Downloads\rtos\stm32cubeIDE\1_uart_driver\STM32F411RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="1_uart_driver.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: 1_uart_driver.elf
+ 
+arm-none-eabi-size   1_uart_driver.elf 
+arm-none-eabi-objdump -h -S  1_uart_driver.elf  > "1_uart_driver.list"
+   text	   data	    bss	    dec	    hex	filename
+   4192	    108	   1588	   5888	   1700	1_uart_driver.elf
+Finished building: default.size.stdout
+ 
+Finished building: 1_uart_driver.list
+ 
+
+14:41:41 Build Finished. 0 errors, 0 warnings. (took 336ms)
+

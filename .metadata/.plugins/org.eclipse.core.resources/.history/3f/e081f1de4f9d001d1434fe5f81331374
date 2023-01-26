@@ -1,0 +1,16 @@
+#include "led.h"
+
+void led_init(void) {
+	/*  Enable clock for PORT A in AHB bus */
+
+	/* Set led pin as output*/
+
+}
+
+void led_on(void) {
+	/* Set led pin high */
+}
+
+void led_off(void) {
+	/* Set led pin off */
+}
