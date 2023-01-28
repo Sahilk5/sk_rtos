@@ -11,13 +11,18 @@
 #define CTRL_COUNTFLAG (1U<<16)
 #define SYSTICK_RESET 0
 
+#define TIM2EN (1U<<0)
+#define CR1_CEN (1U<<0)
+#define DIER_UIE (1U<<0)
 
 #define INTCTRL (*((volatile uint32_t *)0xE000ED04))
 #define PENDSTSET (1U<26)
 
 void osSchedulerLaunch(void);
+void osSchedulerRoundRobin(void);
 
 uint32_t MILLIS_PRESCALER;
+uint32_t period_tick;
 
 struct tcb {
 	int32_t *stackPtr;
@@ -138,13 +143,14 @@ __attribute__((naked)) void SysTick_Handler(void) {
 	__asm("STR SP, [R1]");
 
 	/* CHOOSE NEXT THREAD */
-	/* Load r1 from a location 4bytes above address r1, i.e. r1 = currentPtr->next */
-	__asm("LDR R1, [R1,#4]");
+	__asm("PUSH {R0, LR}");
+	__asm("BL osSchedulerRoundRobin");
+	__asm("POP {R0, LR}");
 
-	/* Store R1 at address equals r0, i.e. currentPtr = r1*/
-	__asm("STR R1, [R0]");
+	/* R1 = currentPtr */
+	__asm("LDR R1, [R0]");
 
-	/* Load the Cortex-M SP from address equals r1, i.e. SP = currentPtr->StackPtr */
+	/* SP = currentPtr->StackPtr */
 	__asm("LDR SP, [R1]");
 
 	/* Restore manually saved registers*/
@@ -187,4 +193,31 @@ void osThreadYield(void) {
 
 	/* Clear SysTick interrupt */
 	INTCTRL = PENDSTSET;
+}
+
+void osSchedulerRoundRobin(void) {
+	if((++period_tick) == PERIOD) {
+		(*Ptask0)();
+		period_tick = 0;
+	}
+	currentPtr = currentPtr->nextPtr;
+}
+
+void tim_2_1hz_interrupt_init(void) {
+	/*
+	 * Enable clock access
+	 * Setup prescaler
+	 * Set auto reload value
+	 * Clear timer counter
+	 * Enable timer
+	 * Enable interrupt
+	 * Enable interrupt in NVIC
+	 */
+	RCC->APB1ENR |= TIM2EN;
+	TIM2->PSC = 1600 - 1; /* 16Mhz/1600 = 10000 */
+	TIM2->ARR = 10000 - 1; /* 10000/10000 = 1 */
+	TIM2->CNT = 0;
+	TIM2->CR1 = CR1_CEN;
+	TIM2->DIER = DIER_UIE;
+	NVIC_EnableIRQ(TIM2_IRQn);
 }

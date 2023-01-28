@@ -7,6 +7,7 @@
 typedef uint32_t TaskProfiler;
 
 TaskProfiler Task0_TaskProfiler, Task1_TaskProfiler, Task2_TaskProfiler;
+TaskProfiler PTask0_TaskProfiler, PTask1_TaskProfiler;
 void motor_run(void);
 void motor_stop(void);
 void valve_open(void);
@@ -24,7 +25,6 @@ void task1(void) {
 	while(1) {
 		Task1_TaskProfiler++;
 		valve_open();
-		osThreadYield();
 	}
 }
 
@@ -33,15 +33,26 @@ void task2(void) {
 		Task2_TaskProfiler++;
 		motor_stop();
 		valve_close();
-		osThreadYield();
 	}
+}
+
+void Ptask0(void) {
+	PTask0_TaskProfiler++;
 }
 
 int main() {
 	uart_tx_init();
+	tim_2_1hz_interrupt_init();
 	osKernelInit();
 	osKernelAddThreads(&task0, &task1, &task2);
 	osKernelLaunch(QUANTA);
+}
+
+void TIM2_IRQHandler(void) {
+	/* Clear update interrupt flag */
+	TIM2->SR &= ~(SR_UIF);
+	/* Stuff */
+	PTask1_TaskProfiler++;
 }
 
 void motor_run(void) {
