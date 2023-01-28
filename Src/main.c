@@ -16,6 +16,7 @@ void task0(void) {
 	while(1) {
 		Task0_TaskProfiler++;
 		motor_run();
+		osThreadYield();
 	}
 }
 
@@ -23,6 +24,7 @@ void task1(void) {
 	while(1) {
 		Task1_TaskProfiler++;
 		valve_open();
+		osThreadYield();
 	}
 }
 
@@ -31,6 +33,7 @@ void task2(void) {
 		Task2_TaskProfiler++;
 		motor_stop();
 		valve_close();
+		osThreadYield();
 	}
 }
 

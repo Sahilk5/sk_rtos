@@ -11,6 +11,10 @@
 #define CTRL_COUNTFLAG (1U<<16)
 #define SYSTICK_RESET 0
 
+
+#define INTCTRL (*((volatile uint32_t *)0xE000ED04))
+#define PENDSTSET (1U<26)
+
 void osSchedulerLaunch(void);
 
 uint32_t MILLIS_PRESCALER;
@@ -175,4 +179,12 @@ void osSchedulerLaunch(void) {
 	__asm("CPSIE I");
 	/* Return from exception */
 	__asm("BX LR");
+}
+
+void osThreadYield(void) {
+	/* Clear SysTick current val. reg */
+	SysTick->VAL = 0;
+
+	/* Clear SysTick interrupt */
+	INTCTRL = PENDSTSET;
 }
