@@ -13,5 +13,8 @@ void osKernelLaunch(uint32_t quanta);
 void osThreadYield(void);
 void Ptask0(void);
 void tim_2_1hz_interrupt_init(void);
+void osSemaphoreInit(int32_t *semaphore, int32_t value);
+void osSemaphoreSet(int32_t *semaphore);
+void osSemaphoreWait(int32_t *semaphore);
 
 #endif
